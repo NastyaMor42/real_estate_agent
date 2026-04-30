@@ -3,16 +3,30 @@ from memory import get_memory, update_memory
 
 USER_ID = "nastya"
 
-st.title("בדיקת MEMORY")
+st.title("🏡 התחלת סוכן נדל״ן")
 
-city = st.text_input("עיר:")
-price = st.number_input("מחיר מקסימלי:", step=500)
+memory = get_memory(USER_ID)
 
-if st.button("שמור"):
+# אם יש כבר מידע - מציגים אותו
+if memory:
+    st.write("מה שאני כבר יודע עלייך:")
+    st.write(memory)
+
+st.divider()
+
+st.write("בואי נעדכן חיפוש:")
+
+city = st.text_input("עיר:", value=memory.get("city", ""))
+price = st.number_input("מחיר מקסימלי:", value=memory.get("max_price", 0), step=500)
+
+if st.button("עדכן העדפות"):
     update_memory(USER_ID, {
         "city": city,
         "max_price": price
     })
+    st.success("נשמר!")
 
-st.write("הזיכרון שלך:")
+st.divider()
+
+st.write("הזיכרון הנוכחי:")
 st.write(get_memory(USER_ID))
